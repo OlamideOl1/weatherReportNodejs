@@ -4,7 +4,7 @@ const app = express();
 
 const https = require("https");
 
-var fs = require('fs');
+const fs = require('fs');
 
 const bodyParser = require("body-parser");
 
@@ -16,10 +16,22 @@ app.post("/", function(req, res) {
 
   var cityname = req.body.cityName;
   
-  var apikey = fs.readFile('apikey.txt', function(err, data) {
-    return res.end();
-  });
+  var apikey = "";
+  
+  try {
+	  
+	const data = fs.readFileSync(__dirname + "/apikey.txt", 'utf8')
+  
+	apikey = data;
+	
+  } catch (err) {
+	
+	console.log("error occured "+err.message);
+	
+  }
+ 
 
+console.log("api key is "+apikey);
 
   const unit = "metric";
   const url = "https://api.openweathermap.org/data/2.5/weather?q=" + cityname + ",&APPID=" + apikey + "&units=" + unit;
